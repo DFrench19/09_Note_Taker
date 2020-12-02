@@ -1,21 +1,26 @@
-const path = require("path");
+const router =require("express").Router();
+const notes = require("../db/notes.js");
 
-module.exports = function (app, fs) {
+module.exports = function (db) {
 
     const db = require("./db/db.json");
 
 
-    app.get("/api/notes/", function (req, res) {
-        note_data.push(req.body);
-        res.json(true);
-    });
 
-    app.get("/api/notes/", function (req, res) {
-        res.json(note_data);
-    });
-
-    app.get("/api/notes/", function(req, res){
-        note_data.length = 0;
-        res.json({ok: true});
-    });
+    router.delete("/notes/:id", function(req, res){
+        notes.removeNote(req.params.id)
+        .then(() => res.json({ok: true}))
+        .catch(err => res.status(500).json(err));
+    })
+    router.get("/notes", function(req, res){
+        notes.getNotes()
+        .then(notes => res.json(notes))
+        .catch(err => res.status(500).json(err));
+    })
+    router.post("/notes", function(req, res){
+        notes.addNotes(req.body)
+        .then(notes => res.json(notes))
+        .catch(err => res.status(500).json(err));
+    })
+    
 }
