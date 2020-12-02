@@ -1,5 +1,5 @@
 const router =require("express").Router();
-const notes = require("../db/notes.js");
+const notes = require("../db/db.json");
 
 module.exports = function (db) {
 
